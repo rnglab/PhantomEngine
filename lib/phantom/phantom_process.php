@@ -8,10 +8,6 @@
 class phantom extends Base {
 	
 	public $_helper;
-	public $mapTr;        /*target uri array or phantom*/
-	public $mapEn;		  /*target uri array or phantom*/
-	public $mapMcServers; /*target uri array or phantom*/
-	public $mapOpticalIllisions; /*target uri array or phantom*/
 	public $_mapUsPresidents; /*target uri array*/
 	
 	/**
@@ -34,52 +30,6 @@ class phantom extends Base {
 
         $this->$_GET['task']();
     }
-	
-	
-	/**
-	 * phantom action for Kuran Cozumu
-	 **/
-	public function processBooksReasonsKC()
-	{
-		foreach ( $this->mapTr as $item )
-		{
-			/*main process js dosyasını yüklüyor ve hedef url için replace işlemi gerçekleştiriyoruz*/
-			$proceesJsFile = @file_get_contents( $this->processJsPath . "kc/pf_kurancozum_tr_reasons.js" );
-			$this->pjCode = str_replace("##_url_replace_##", $item['url'], $proceesJsFile);
-	
-			$this->executePhantom();
-	
-			$this->result = str_replace('"}, ] }', '"} ] }', $this->result);
-				
-			$this->saveToFile($item["name"].".json", $this->result , __FUNCTION__);
-				
-		}
-	}	
-	
-	
-	/**
-	 * phantom action for Kuran Cozumu English
-	 **/
-	public function processBooksKCenglish()
-	{
-    	foreach ( $this->mapEn as $item )
-		{	
-			/*main process js dosyasını yüklüyor ve hedef url için replace işlemi gerçekleştiriyoruz*/
-			$proceesJsFile = @file_get_contents( $this->processJsPath . "kc/pf_kurancozum_en.js" );
-			$this->pjCode = str_replace("##_url_replace_##", $item['url'], $proceesJsFile);
-	
-			$this->executePhantom();
-				
-			$this->result = str_replace('"}, ] }', '"} ] }', $this->result);
-			
-			//$this->checkErrors();
-			
-			$this->saveToFile($item["name"].".json", $this->result, __FUNCTION__ );
-	
-		}
-	}
-
-
 	
 	/**
 	 * phantom action for Us Presidents List
@@ -129,122 +79,7 @@ class phantom extends Base {
 			}
 		}
 	}	
-	
-	
-	
-	/**
-	 * phantom action for Mc Servers List
-	 **/
-	public function processMcServersList()
-	{
-		$results = "";
-		$i=1;
-		for( $i = 1; $i < $this->mapMcServers["totalPages"]; $i++ )	
-		{
-			/*main process js dosyasını yüklüyor ve hedef url için replace işlemi gerçekleştiriyoruz*/
-			$proceesJsFile = @file_get_contents( $this->processJsPath . "mcservers/pf_serverlist.js" );
-			$this->pjCode = str_replace("##_url_replace_##", $this->mapMcServers['url'] . (string)$i, $proceesJsFile);
 
-			$this->executePhantom();				
-			$results .= ( $i > 1 ? "," : "" ) . $this->result;	
-			//$this->checkErrors();								
-		}
-		
-		$results = '{ "data" : [ ' . $results . ' ]}';
-		
-		$this->saveToFile($this->mapMcServers["name"].".json", $results, __FUNCTION__ );
-	}	
-	
-	
-
-	/**
-	 * phantom action for Mc Servers Detail List
-	 **/
-	public function processMcServersListDetail()
-	{		
-		$serverListData = @file_get_contents( $this->outputPath . "processMcServersList" . DS . $this->mapMcServers["name"].".json" );
-		$serverListData = @json_decode($serverListData);
-		$results = "";
-		if( !$serverListData ) { exit("ERROR => json resource not found @ " . $this->outputPath . "processMcServersList" . DS . $this->mapMcServers["name"].".json"); }
-
-		foreach ($serverListData->data as $key => $server)
-		{			
-			/*main process js dosyasını yüklüyor ve hedef url için replace işlemi gerçekleştiriyoruz*/
-			$proceesJsFile = @file_get_contents( $this->processJsPath . "mcservers/pf_serverlist_detail.js" );
-			$this->pjCode = str_replace("##_url_replace_##", "http://minecraftservers.org/server/" . $server->id, $proceesJsFile);
-			$this->executePhantom();
-			$results .= ( $key >= 1 ? "," : "" ) . $this->result;					
-		}
-		
-		$results = '{ "data" : [ ' . $results . ' ]}';
-		
-		$this->saveToFile($this->mapMcServers["name"]."_details.json", $results, __FUNCTION__ );		
-		
-	}	
-	
-	
-	
-	/**
-	 * phantom action for optical Illisions Details
-	 **/
-	public function processOpticalIllusionsDetail()
-	{			
-		/*main process js dosyasını yüklüyor ve hedef url için replace işlemi gerçekleştiriyoruz*/
-		$proceesJsFile = @file_get_contents( $this->processJsPath . "23opticalillusions/pf_optil.js" );
-		$this->pjCode = str_replace("##_url_replace_##", "http://www.123opticalillusions.com/archive.php", $proceesJsFile);
-		$this->executePhantom();
-		$jsonData = json_decode("[" .$this->result . "]");						
-		
-		foreach ($jsonData as $key => $item)
-		{
-			echo " <b>$key ===>>> $item->name<hr> ";
-			
-			$proceesJsFile = @file_get_contents( $this->processJsPath . "23opticalillusions/pf_optil_detail.js" );
-			$this->pjCode = str_replace("##_url_replace_##", $item->url, $proceesJsFile);
-			$this->executePhantom();
-			$itemData = json_decode( $this->result );
-						
-			$html = $this->_helper->getOpticalIllusionsHtmlTemplate( urldecode( $itemData->html ), true );
-			$img = $this->_helper->getOpticalIllusionsImage( $itemData->imgUrl );
-			
-			/*save files*/
-			$this->saveToFile($key.".html", $html, __FUNCTION__ );
-			$this->saveToFile($img->name, $img->data, __FUNCTION__ . "/img" );
-			
-		}
-	
-	}	
-	
-	
-	/**
-	 * phantom action for optical Illisions multiple Details
-	 **/
-	public function processOpticalIllusionsMultipleDetail()
-	{		
-		foreach ($this->mapOpticalIllisions as $key => $item)
-		{
-			echo " <b>$key ===>>> {$item["name"]}<hr> ";
-			
-			$proceesJsFile = @file_get_contents( $this->processJsPath . "23opticalillusions/pf_optil_brainden_detail.js" );
-			$this->pjCode = str_replace("##_url_replace_##", $item["url"], $proceesJsFile);
-			$this->executePhantom();
-			$itemData = json_decode( ( $item["name"] == "art" ? $this->_helper->getOpticalArtIllisionsJson() : "[".$this->result."]") );
-			
-			foreach ( $itemData as $keyItem => $itemDetail )
-			{
-				$html = $this->_helper->getOpticalIllusionsHtmlTemplate( urldecode( $itemDetail->html ), false );
-				$img = $this->_helper->getOpticalIllusionsImage( $itemDetail->imgUrl );
-					
-				echo " <br><b> ----- " . urldecode( $itemDetail->title ) . "<hr> ";				
-				
-				/*save files*/
-				$this->saveToFile($keyItem.".html", $html, __FUNCTION__ . "/" . $item["name"] );
-				$this->saveToFile($img->name, $img->data, __FUNCTION__ . "/" . $item["name"] . "/images" );						
-			}
-		}
-	
-	}	
-	
 	
 	/**
 	* Uri map for phantom engine
