@@ -67,7 +67,7 @@ switch($op)
 				 $("div#executeButton").click( function(){
 					 this.target = $("ul.opset input[type='radio']:checked").val();
 					 if( typeof( this.target ) == "undefined" ) {
-						 alert( "It seens there are not Selected Proccess so Cannot Execute!" );
+						 alert( "It seems there is not Selected Process. So cannot execute!" );
 					 }
 					 else
 					 {
@@ -87,10 +87,12 @@ switch($op)
 			<h1 style="color:rgb(60, 162, 186);">Phantom Admin | Example Nodes</h1>
 
 			<div id="accordion">
-				<h3>Process Nodes For US Presidents</h3>
+				<h3>Examples</h3>
 				<div>
 					<ul class="opset">
-						<li> <input type="radio" name="proccessType" value="?op=phantom&task=processUsPresidentsDetail">Start Phantom Process For "Us Presidents Detail Pages"</input></li>
+						<li> <input type="radio" name="proccessType" value="?op=phantom&task=screenShot">Take Sample Screen Shot of Sample Web Page</input></li>
+                        <li> <input type="radio" name="proccessType" value="?op=phantom&task=crawlHtml">Crawl Sample Web Page ( Save crawled data as html )</input></li>
+                        <li> <input type="radio" name="proccessType" value="?op=phantom&task=crawlJson">Crawl Sample Web Page ( Save crawled data as json )</input></li>
 					</ul>
 				</div>
 			</div>
