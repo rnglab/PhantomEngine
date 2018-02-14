@@ -2,7 +2,7 @@
 
 /**
 * class phantom
-* Executes given task
+* Executes given task. This is the main task holder class.
 * @author RNG
 **/
 class phantom extends Base {

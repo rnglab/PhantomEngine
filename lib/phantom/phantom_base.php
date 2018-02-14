@@ -26,12 +26,12 @@ class Base {
 	public function __construct()
 	{
 		/*define paths*/
-		$this->phantomPath = ROOT_PATH . DS . "lib" . DS . "phantom_library" . DS;
-        $this->jsPath = ROOT_PATH. DS . "js" . DS;
-        $this->processJsPath = ROOT_PATH. DS . "js" . DS ."process_files" .DS;
-        $this->outputPath = ROOT_PATH . DS . "output" . DS;
-		$this->outputPathTr = ROOT_PATH . DS . "output" . DS . "tr" .DS;
-		$this->outputPathEn = ROOT_PATH . DS . "output" . DS . "en" .DS;
+		$this->phantomPath = ROOT_PATH . DS . 'lib' . DS . 'phantom_library' . DS;
+        $this->jsPath = ROOT_PATH. DS . 'js' . DS;
+        $this->processJsPath = ROOT_PATH. DS . 'js' . DS .'process_files' .DS;
+        $this->outputPath = ROOT_PATH . DS . 'output' . DS;
+		$this->outputPathTr = ROOT_PATH . DS . 'output' . DS . 'tr' .DS;
+		$this->outputPathEn = ROOT_PATH . DS . 'output' . DS . 'en' .DS;
 		$this->canRemoveProcessJsFile = true;
 		
 		$this->checkOS();		
