@@ -3,7 +3,7 @@
 
 /**
 * class Base
-* Phantom Engine için Temel Sınıf
+* Core Class for Phantom Engine
 * @author RNG
 **/
 class Base {
@@ -49,13 +49,7 @@ class Base {
 	**/
 	private function checkOS()
 	{
-	    $libraryMap= array( 'Linux' => 'phantomjs_linux',
-                            'FreeBSD' => 'phantomjs',
-                            'WIN' => 'phantomjs.exe',
-                            'WIN32' => 'phantomjs.exe',
-                            'WINNT' => 'phantomjs.exe',
-                            'Windows' => 'phantomjs.exe',
-        );
+	    $libraryMap= array();
 
 	    $this->phantomPath .= $libraryMap[php_uname($mode='s')];
 	 	

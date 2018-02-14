@@ -2,7 +2,7 @@
 
 /**
 * class phantom
-* Hedef url'leri phantom ile tarar ve geçerli js process'i çalıştırarak sonuçları işler.
+* Executes given task
 * @author RNG
 **/
 class phantom extends Base {
@@ -15,15 +15,14 @@ class phantom extends Base {
 	public function __construct()
 	{
 		parent::__construct();
-		
-		/*phantom için hedef url'leri içeren kütüphaneyi hazırlıyoruz*/
+
+		/*prepare target url lists*/
 		$this->prepareMaps();
-		
-		/*helper sınıfını hazırla*/
+
 		$this->_helper = new phantomHelper();
-		
-		/*request ile talep edilen methodu çalıştırıyoruz*/
-		if(!isset( $_GET["task"] )){
+
+		/*execute given task if it is available*/
+		if(!isset( $_GET['task'] )){
             exit('ERROR : Task can not be empty');
 		}
 
