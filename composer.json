@@ -1,0 +1,17 @@
+{
+  "require": {
+    "monolog/monolog": "1.0.*",
+    "jakoch/phantomjs-installer": "2.1.1-p09"
+  },
+  "config": {
+    "bin-dir": "bin"
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "PhantomInstaller\\Installer::installPhantomJS"
+    ],
+    "post-update-cmd": [
+      "PhantomInstaller\\Installer::installPhantomJS"
+    ]
+  }
+}

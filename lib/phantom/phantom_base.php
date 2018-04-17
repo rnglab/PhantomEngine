@@ -26,7 +26,7 @@ class Base {
 	public function __construct()
 	{
 		/*define paths*/
-		$this->phantomPath = ROOT_PATH . DS . 'lib' . DS . 'phantom_library' . DS;
+		$this->phantomPath = ROOT_PATH . DS . 'vendor' . DS . 'jakoch' . DS . 'phantomjs'. DS . 'bin';
         $this->jsPath = ROOT_PATH. DS . 'js' . DS;
         $this->processJsPath = ROOT_PATH. DS . 'js' . DS .'process_files' .DS;
         $this->outputPath = ROOT_PATH . DS . 'output' . DS;
