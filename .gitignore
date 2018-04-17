@@ -2,3 +2,5 @@
 .DS_Store
 .AppleDouble
 lib/phantom_library
+vendor
+composer.lock
